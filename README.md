@@ -21,3 +21,4 @@ A tool that scans a set of tickers for the largest price gap from the previous d
 # Notes:
 - This tool can be useful for finding which stocks will be popular on market open, but does not always indicate winning stocks. 
 - Additional research should be done on these stocks before making a decision to trade.
+- Sometimes the data recieved from yfinance can be faulty, resulting in false output.
