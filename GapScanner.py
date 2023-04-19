@@ -3,6 +3,7 @@ import yfinance as yf
 import pandas as pd, timeit
 import ray
 import datetime
+import re
 from tickers import getTickers
 
 def getGaps():
@@ -14,7 +15,10 @@ def getGaps():
         try:
             data = yf.download(symbol, start=yesterday, interval="5m", progress=False, prepost=True)["Close"]
             current = data[-1:].tolist()[0]
-            previous = data[[f"{yesterday} 16:00:00"]].tolist()[0]
+
+            output = re.findall(r'15:[0-9][0-9]:[0-9][0-9]-[0-9][0-9]:[0-9][0-9]    [0.9]*.[0-9]*\n[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] 16:[0-9][0-9]:[0-9][0-9]-[0-9][0-9]:[0-9][0-9]    [0.9]*.[0-9]*',  data.to_string())
+            previous = float(output.__str__().split("    ")[2].split("'")[0])
+
             gap = round(((current - previous)/abs(previous)) * 100, 2)
             return (symbol, gap)
         except:
